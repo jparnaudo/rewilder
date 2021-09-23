@@ -8,7 +8,7 @@ var deployedContracts = {
 
   "GnosisSafeProxyFactory": {
     "tx": "0x332dad8b0490350e0e342664513f2442a91be1632c03604da9c2a2c30aa70553",
-    "deployedAt": "0xE89ce3bcD35bA068A9F9d906896D3d03Ad5C30EC",
+    "deployedAt": "0xAADFe7925b0Cad895665aDE74f5848043B8c4b7D",
     "gasUssed": 867582
   },
 
@@ -56,7 +56,7 @@ var deployedContracts = {
 
   "GnosisSafe": {
     "tx": "0x6e6ac66712e7c79563966ce6f39dd310fad02649ceda730608c4da811ddfcda2",
-    "deployedAt": "0xb4A7C7da1631CF60A2Cf23ABc86986f99a1A7f70",
+    "deployedAt": "0xdB6FC7603DdC91F027379267A3549D28E65484D5",
     "gasUssed": 5096984
   }
 }
