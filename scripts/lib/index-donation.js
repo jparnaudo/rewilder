@@ -1,18 +1,13 @@
-var admin = require('firebase-admin');
-var serviceAccount = require("../../rewilder-dev-firebase.json");
-const app = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-
 const FLAVOR_TEXT = require("../../src/lib/flavorText.js");
 const TIER_MARKERS = require("../../src/lib/tierMarkers.js");
 
-const db = admin.firestore(app);
+const db = require('./firestore');
 
-module.exports = async function(donor, amount, tokenID, txid) {
+module.exports = async function(donor, amount, tokenID, txid, timestamp) {
   console.log(donor, "donated", ethers.utils.formatEther(amount), "ETH",
-  "in transaction ", txid,
-  "and obtained token id", tokenID.toString());
+  "in transaction", txid,
+  "and obtained token id", tokenID.toString(),
+  "at timestamp", timestamp);
 
   tier = 'cypress';
   if (amount.gte(ethers.utils.parseEther(TIER_MARKERS['araucaria']+".0"))) {
@@ -25,7 +20,9 @@ module.exports = async function(donor, amount, tokenID, txid) {
     name: 'Rewilder Origin Donation #' + tokenID.toString(),
     description: 'Receipt NFT for Rewilder\'s first donation campaign on October 2021.',
     external_url: tokenID?`https://app.rewilder.xyz/donation/${tokenID}`:'https://app.rewilder.xyz',
-    image: 'https://app.rewilder.xyz/assets/img/donation/' + tier + '.png',
+    // TODO: replace for production
+    //image: `https://app.rewilder.xyz/assets/img/donation/${tier}-full.png`,
+    image: `https://app.rewilder.xyz/assets/img/donation/${tier}.png`,
     attributes: [
       {trait_type: "donor", value: donor},
       {trait_type: "amount", value: ethers.utils.formatEther(amount)+" ETH"},
@@ -40,7 +37,7 @@ module.exports = async function(donor, amount, tokenID, txid) {
   // initialize updates for this token
   const updates = {};
   updates[0] = {
-    timestamp: new Date().getTime(),
+    timestamp: timestamp || new Date().getTime(),
     type: "creation", 
     info: {
       "txid": txid,

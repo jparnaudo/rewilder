@@ -8,9 +8,17 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import RewilderIdenticon from "./RewilderIdenticon";
 import truncateHash from "../lib/truncateHash";
 
+
 function WalletInfo() {
-  const { account, deactivate } = useEthers();
+  const { account, deactivate, library } = useEthers();
   const etherBalance  = useEtherBalance(account);
+  const disconnectWallet = () => {
+    if (library.connection.url !== "metamask") {
+      library.provider.disconnect();
+    }
+    deactivate();
+  };
+
   return (
     account && (
       <>
@@ -20,7 +28,7 @@ function WalletInfo() {
               {etherBalance? parseFloat(formatEther(etherBalance)).toFixed(3):"0"}
               {" "}ETH{" "}
             </span>
-            <span>
+            <span className="address">
               <RewilderIdenticon account={account} />
               {"  "}{truncateHash(account)}
             </span>
@@ -28,7 +36,7 @@ function WalletInfo() {
           <Menu.Items>
             <Menu.Item as="div" className="disconnect">
               {({ active }) => (
-                <a href="#" onClick={deactivate}>
+                <a href="#" onClick={disconnectWallet}>
                   <FontAwesomeIcon icon={faSignOutAlt} />
                   Disconnect
                 </a>

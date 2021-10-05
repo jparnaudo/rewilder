@@ -28,14 +28,6 @@ const RewilderSlider = styled(SliderUnstyled)(
     opacity: 1;
   }
 
-  & .MuiSlider-mark {
-    width: 1px;
-    height: 7px;
-    position: absolute;
-    display: inline;
-    background-color: rgba(63, 105, 71, 0.2);
-  }
-
   & .MuiSlider-rail {
     display: block;
     position: absolute;
@@ -77,8 +69,6 @@ const RewilderSlider = styled(SliderUnstyled)(
     background-size: 75%;
     background-repeat: no-repeat;
     background-position: 42% 50%;;
-    //background-color: #fff;
-    //background: rgb(56, 132, 71, 2);
     :hover,
     &.Mui-focusVisible {
       box-shadow: 0 0 0 0.25rem ${alpha(
@@ -224,20 +214,25 @@ function DonationControls({ amount, setAmount, tier, alreadyDonated, donateTx, r
             value={amount}
             min={1}
             step={1}
-            marks={marks}
+            // TODO: uncomment this when this @mui/core/SliderUnstyled bug is fixed:
+            // https://github.com/mui-org/material-ui/issues/28500
+            // marks={marks}
             max={100}
             disabled={alreadyDonated}
             onChange={handleSliderChange}
           />
+          {/* TODO remove this when above-mentioned bug is fixed */}
+          <div style={{left: "32.3232%"}} className="MuiSlider-mark"></div>
+          <div style={{left: "65.6566%"}} className="MuiSlider-mark"></div>
       </div>
       <div className="range-value">
           <span>
             1 ETH{" "}
-            <InformationIcon text={"Our current best estimates say that donating the equivalent of $3000 USD in crypto will help add ~1 hectare (~2.5 acres) of wildland to our first rewilding project. This fact, added to marginal costs of providing updates in the future, is why we require this as the minimum donation value."}/>
+            <InformationIcon text={"Our current best estimates say that donating the equivalent of ~$3000 USD in ETH will help add ~1 acre (~0.4 hectares) of wildland and fund the future maintenance costs to our first rewilding project. This fact, added to marginal costs of providing updates in the future, is why we require this as the minimum ETH donation value in this campaign."}/>
           </span>
           <span>
             100 ETH{" "}
-          <InformationIcon text={"Given this is our first fundraising campaign, we've decided to set a maximum donation per address"}/>
+          <InformationIcon text={"Given this is our first fundraising campaign, we've decided to set a maximum donation per address."}/>
           </span>
       </div>
       <div className="donating-value">

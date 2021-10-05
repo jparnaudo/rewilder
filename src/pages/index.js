@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useEthers, useTransactions } from "@usedapp/core";
 import Router from 'next/router'
 import { useDisclosure } from "@chakra-ui/react";
+import { ethers } from 'ethers';
 
 import { Layout } from "./../components/Layout";
 import { useBalanceOf, useTokenOfOwner } from "../lib/rewilderNFT";
@@ -81,6 +82,12 @@ function IndexPage() {
       }
     }
   }, [donationEvents]);
+
+  useEffect(() => {
+    if ((alreadyDonated || donationPending) && transactions && transactions[0] && transactions[0].transaction) {
+      setAmount(ethers.utils.formatEther(transactions[0].transaction.value));
+    }
+  }, [alreadyDonated, donationPending, transactions]);
   
   return (
     <>
@@ -88,7 +95,7 @@ function IndexPage() {
       <div className="container">
         <div className="hero-v1-wrapper">
           <div className="hero-v1-thumb">
-            <img src={`assets/img/donation/${tier}.png`} className="banner-image" />
+            <img src={`assets/img/donation/${tier}-web.jpg`} className="banner-image" />
             <p>“{flavorText}”</p>
           </div>
           <div className="hero-v1-content">

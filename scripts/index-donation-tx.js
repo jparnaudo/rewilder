@@ -1,16 +1,15 @@
 const {ethers} = require("hardhat");
 
-const indexDonation = require("./lib/index-donation");
+const processTransaction = require("./lib/process-transaction");
 
 async function main() {
-  const txid = "0xc7495c4d762db9d1d8c1f2e4b3843624a8bfead3f88e415fe6ee6c0d4a26ea17";
+  const txid = "0xe2b62497141b753d73b38a13422093fa70fcae45139f673eba1cb4d992992634";
+  console.log('processing single tx', txid);
 
-  const receipt = await ethers.provider.getTransactionReceipt(txid);
-  let abi = [ "event DonationReceived(address indexed donor, uint256 value, uint256 indexed tokenID)" ];
-  let iface = new ethers.utils.Interface(abi);
-  let log = iface.parseLog(receipt.logs[1]);
-  const {donor, value: amount, tokenID} = log.args;
-  await indexDonation(donor, amount, tokenID, txid);
+  const tx = await ethers.provider.getTransaction(txid);
+  const block = await ethers.provider.getBlock(tx.blockNumber);
+  tx.timestamp = block.timestamp;
+  await processTransaction(tx)
 }
 
 main()
